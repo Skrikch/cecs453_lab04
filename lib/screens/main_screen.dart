@@ -1,3 +1,4 @@
+// Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
             // We need to figure out how to align all entries on this screen
             // Like an invisible table or something.
             Padding(padding: EdgeInsets.symmetric(vertical:10)),
-            Text("Amount:")
+            Text("Amount:\t ${amount}")
           ]
         )
       )

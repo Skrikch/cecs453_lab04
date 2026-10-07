@@ -1,3 +1,4 @@
+// Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
 import 'screens/main_screen.dart';
 
