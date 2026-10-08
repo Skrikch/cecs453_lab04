@@ -25,8 +25,17 @@ class _MortgageAppState extends State<MortgageApp> {
         // The different screens
         routes: {
           '/': (context) => MainScreen(),    // default (screen that shows the information)
-          '/CalcScreen': (context) => MortgageCalculator(),   // screen that calls for input
+          //'/CalcScreen': (context) => MortgageCalculator(),   // screen that calls for input
         },
+      // Need to add special logic to handle the object type we're returning
+      onGenerateRoute: (settings) {
+          if (settings.name == '/CalcScreen') {
+            return MaterialPageRoute<MortgageResult>(
+              builder: (context) => MortgageCalculator(),
+            );
+          }
+          return null;
+      }
     );
   }
 }
@@ -51,7 +60,7 @@ class _MainState extends State<MainScreen> {
 
 
   Future<void> _onButtonPressed()  async {
-    final MortgageResult? result = await Navigator.pushNamed<MortgageResult>(context, '/mortgage');
+    final MortgageResult? result = await Navigator.pushNamed<MortgageResult>(context, '/CalcScreen');
 
     if (result != null) {
       // Inputting all of the calculated output values into the local variables

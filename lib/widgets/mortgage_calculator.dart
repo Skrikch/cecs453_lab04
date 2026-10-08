@@ -1,7 +1,7 @@
 // Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
 import 'dart:math'; // For pow
-import 'package:cecs453_lab04/classes/mortgageResult_class.dart';
+import 'package:cecs453_lab04/classes/mortgageResult_class.dart'; // This is safer because otherwise I have to use positional movement like ../classes lol
 
 
 // This class is going to be placed into edit_screen, helps divide the logic
