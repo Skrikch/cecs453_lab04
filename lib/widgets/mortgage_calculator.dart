@@ -1,12 +1,13 @@
 // Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
+import 'dart:math'; // For pow
 
 class MortgageResult {
   final int years;
   final double principalAmount;
   final double interestRate;
-  final String monthlyPayment;
-  final String totalPayment;
+  final double monthlyPayment;
+  final double totalPayment;
 
   MortgageResult({
     required this.principalAmount,
@@ -37,15 +38,17 @@ class _MortgageCalculatorState extends State<MortgageCalculator>{
   void _calculateMortgage() {
     // Simple interest formula is just I = Prt
     int _tempTerm = _interestTerm;
+    int _totalMonths = _tempTerm * 12;
     double _tempPrincipal = _principalController.text as double;
     double _tempRate = _interestRate;
-    // TODO: implement calculation logic
+    // Calculating Total and Monthly interest
     double _totalInterest = _tempPrincipal * _tempTerm * _tempRate;
+    double _monthlyPayment = (_tempPrincipal * (_tempRate * pow((1 + _tempRate), _totalMonths))) / ((1 + _tempRate)* _totalMonths - 1);
 
-    // Now for monthly
+    MortgageResult _result = new MortgageResult(principalAmount: _tempPrincipal, years: _tempTerm, interestRate: _tempRate, monthlyPayment: _monthlyPayment, totalPayment: _totalInterest);
 
     setState(() {
-      // TODO: Update _result here
+      // TODO: give _result to the other screen
     });
   }
 
