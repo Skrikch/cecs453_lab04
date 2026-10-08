@@ -1,22 +1,8 @@
 // Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
 import 'dart:math'; // For pow
+import 'package:cecs453_lab04/classes/mortgageResult_class.dart';
 
-class MortgageResult {
-  final int years;
-  final double principalAmount;
-  final double interestRate;
-  final double monthlyPayment;
-  final double totalPayment;
-
-  MortgageResult({
-    required this.principalAmount,
-    required this.years,
-    required this.interestRate,
-    required this.monthlyPayment,
-    required this.totalPayment,
-  });
-}
 
 // This class is going to be placed into edit_screen, helps divide the logic
 class MortgageCalculator extends StatefulWidget{
