@@ -33,23 +33,32 @@ class _MortgageCalculatorState extends State<MortgageCalculator>{
 
   // Defining State variables for radio buttons and checkboxes
   int _interestTerm = 0;
-  bool _conditionsAccepted = false;
 
   void _calculateMortgage() {
     // Simple interest formula is just I = Prt
-    int _tempTerm = _interestTerm;
-    int _totalMonths = _tempTerm * 12;
-    double _tempPrincipal = _principalController.text as double;
-    double _tempRate = _interestRate;
-    // Calculating Total and Monthly interest
-    double _totalInterest = _tempPrincipal * _tempTerm * _tempRate;
-    double _monthlyPayment = (_tempPrincipal * (_tempRate * pow((1 + _tempRate), _totalMonths))) / ((1 + _tempRate)* _totalMonths - 1);
+    final double principal = double.parse(_principalController.text);
+    final int totalMonths = _interestTerm * 12;
 
-    MortgageResult _result = new MortgageResult(principalAmount: _tempPrincipal, years: _tempTerm, interestRate: _tempRate, monthlyPayment: _monthlyPayment, totalPayment: _totalInterest);
+    // converts 2.00 to 0.0200
+    final double rate = _interestRate / 100;
 
-    setState(() {
-      // TODO: give _result to the other screen
-    });
+    final double monthlyRate = rate / 12;
+
+    final double monthlyPayment =
+      principal * (monthlyRate * pow(1 + monthlyRate, totalMonths)) /
+          (pow(1 + monthlyRate, totalMonths) - 1);
+
+    final double totalPayment = monthlyPayment * totalMonths;
+
+    final MortgageResult result = MortgageResult(
+      principalAmount: principal,
+      years: _interestTerm,
+      interestRate: _interestRate,
+      monthlyPayment: monthlyPayment,
+      totalPayment: totalPayment,
+    );
+
+    Navigator.pop(context, result);
   }
 
   @override
