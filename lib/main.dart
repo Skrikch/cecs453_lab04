@@ -20,7 +20,7 @@ class _MortgageAppState extends State<MortgageApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'B + C Mortgage Calculator',
-        home: MainScreen(),
+        //home: MainScreen(),
 
         // The different screens
         routes: {
