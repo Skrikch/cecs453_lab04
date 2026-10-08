@@ -41,7 +41,11 @@ class MainScreen extends StatefulWidget {
 
 class _MainState extends State<MainScreen> {
   // Variables
-  bool isAccepted = false;    // holds value for whether Terms and Conditions accepted or not
+  bool _isAccepted = false;    // holds value for whether Terms and Conditions accepted or not
+
+  void _onButtonPressed() {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,20 +60,23 @@ class _MainState extends State<MainScreen> {
           Text('Monthly Payment'),
           Text('Total Payment'),
 
+          // Checkbox to ensure Terms & Conditions agreed to prior to being able to click button
           CheckboxListTile(
             title: const Text('Accept Terms & Conditions'),
-            value: isAccepted,
+            checkColor: Colors.white,
+            activeColor: Colors.deepPurpleAccent,
+            value: _isAccepted,
             onChanged: (bool? value) {
               setState(() {
-                isAccepted = value!;
+                _isAccepted = value ?? false;
               });
             }
           ),
 
-          TextButton(
-            onPressed: null,
-            child: Text('Modify Data')
-          )
+          ElevatedButton(
+            onPressed: _isAccepted ? _onButtonPressed : null,
+            child: Text('Modify Data'),
+          ),
         ],
       ),
     );
