@@ -1,6 +1,7 @@
 // Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
 import 'widgets/mortgage_calculator.dart';
+import 'classes/mortgageResult_class.dart';
 
 void main() {
   runApp(const MortgageApp());
@@ -41,10 +42,25 @@ class MainScreen extends StatefulWidget {
 class _MainState extends State<MainScreen> {
   // Variables
   bool _isAccepted = false;    // holds value for whether Terms and Conditions accepted or not
+  // local variables to hold all needed calculated values
+  double principleAmount = 0;
+  int years = 0;
+  double interestRate = 0.0;
+  double monthlyPayment = 0.0;
+  double totalPayment = 0.0;
 
 
-  void _onButtonPressed() {
-    Navigator.pushNamed(context, '/CalcScreen');
+  Future<void> _onButtonPressed()  async {
+    final MortgageResult? result = await Navigator.pushNamed<MortgageResult>(context, '/mortgage');
+
+    if (result != null) {
+      // Inputting all of the calculated output values into the local variables
+      principleAmount = result.principalAmount;
+      years = result.years;
+      interestRate = result.interestRate;
+      monthlyPayment = result.monthlyPayment;
+      totalPayment = result.totalPayment;
+    }
   }
 
   @override
