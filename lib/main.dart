@@ -83,3 +83,18 @@ class _MainState extends State<MainScreen> {
   }
 }
 
+class InputScreen extends StatefulWidget {
+  const InputScreen({super.key});
+
+  @override
+  State<InputScreen> createState() => _InputState();
+}
+
+class _InputState extends State<InputScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Mortgage Calculator')),
+    );
+  }
+}
