@@ -24,7 +24,7 @@ class _MortgageAppState extends State<MortgageApp> {
         // The different screens
         routes: {
           '/': (context) => MainScreen(),    // default (screen that shows the information)
-          '/InputScreen': (context) => InputScreen(),   // screen that calls for input
+          '/CalcScreen': (context) => MortgageCalculator(),   // screen that calls for input
         },
     );
   }
@@ -42,8 +42,9 @@ class _MainState extends State<MainScreen> {
   // Variables
   bool _isAccepted = false;    // holds value for whether Terms and Conditions accepted or not
 
-  void _onButtonPressed() {
 
+  void _onButtonPressed() {
+    Navigator.pushNamed(context, '/CalcScreen');
   }
 
   @override
@@ -78,22 +79,6 @@ class _MainState extends State<MainScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class InputScreen extends StatefulWidget {
-  const InputScreen({super.key});
-
-  @override
-  State<InputScreen> createState() => _InputState();
-}
-
-class _InputState extends State<InputScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Mortgage Calculator')),
     );
   }
 }
