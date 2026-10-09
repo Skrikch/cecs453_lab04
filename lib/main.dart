@@ -21,16 +21,15 @@ class _MortgageAppState extends State<MortgageApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'B + C Mortgage Calculator',
-      //home: MainScreen(),
 
       // The different screens
       routes: {
-        '/': (context) => MainScreen(),
         // default (screen that shows the information)
-        //'/CalcScreen': (context) => MortgageCalculator(),   // screen that calls for input
+        '/': (context) => MainScreen(),
       },
       // Need to add special logic to handle the object type we're returning
       onGenerateRoute: (settings) {
+        // Our calculator screen
         if (settings.name == '/CalcScreen') {
           return MaterialPageRoute<MortgageResult>(
             builder: (context) => MortgageCalculator(),
@@ -51,7 +50,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainState extends State<MainScreen> {
-  // Variables
+  // Properties
   bool _isAccepted =
       false; // holds value for whether Terms and Conditions accepted or not
   // local variables to hold all needed calculated values
@@ -61,7 +60,7 @@ class _MainState extends State<MainScreen> {
   double monthlyPayment = 0.0;
   double totalPayment = 0.0;
 
-  // Function to reset values
+  // Function to reset values, bound to the clear button
   void _clearValues() {
     setState(() {
       _isAccepted = false;
@@ -96,6 +95,7 @@ class _MainState extends State<MainScreen> {
       appBar: AppBar(title: const Text('Mortgage Calculator')),
       body: Padding(
         padding: EdgeInsets.all(16),
+        // Table to neatly format the output of the calculator
         child: Column(
           children: [
             Table(
@@ -178,6 +178,7 @@ class _MainState extends State<MainScreen> {
                 // Only show the dialog when the user tries to check the box.
                 if (value != true || _isAccepted) return;
 
+                // Displaying an alert box to double-check the TOS agreement
                 final bool? accepted = await showDialog<bool>(
                   context: context,
                   builder: (BuildContext dialogContext) {
@@ -211,12 +212,16 @@ class _MainState extends State<MainScreen> {
               },
             ),
 
+            // Entrypoint for the calculator, won't work until user has
+            // Accepted TOS
             ElevatedButton(
               onPressed: _isAccepted ? _onButtonPressed : null,
               child: Text('Modify Data'),
             ),
 
             Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+
+            // Reset button so the user may start over.
             OutlinedButton.icon(
               onPressed: _clearValues,
               icon: const Icon(Icons.clear_all),
