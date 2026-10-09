@@ -53,7 +53,7 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Probably redundant with edit screen, will fix later
-      appBar: AppBar(title: Text("Britney and Christo\'s Mortgage Calculator")),
+      appBar: AppBar(title: Text("Mortgage Calculator")),
 
       body: Padding(
         padding: EdgeInsets.all(16),
