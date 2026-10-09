@@ -61,6 +61,18 @@ class _MainState extends State<MainScreen> {
   double monthlyPayment = 0.0;
   double totalPayment = 0.0;
 
+  // Function to reset values
+  void _clearValues() {
+    setState(() {
+      _isAccepted = false;
+      principalAmount = 0.0;
+      years = 0;
+      interestRate = 0.0;
+      monthlyPayment = 0.0;
+      totalPayment = 0.0;
+    });
+  }
+
   Future<void> _onButtonPressed() async {
     final MortgageResult? result = await Navigator.pushNamed<MortgageResult>(
       context,
@@ -197,16 +209,18 @@ class _MainState extends State<MainScreen> {
                   _isAccepted = true;
                 });
               },
-              // onChanged: (bool? value) {
-              //   setState(() {
-              //     _isAccepted = value ?? false;
-              //   });
-              // }
             ),
 
             ElevatedButton(
               onPressed: _isAccepted ? _onButtonPressed : null,
               child: Text('Modify Data'),
+            ),
+
+            Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+            OutlinedButton.icon(
+              onPressed: _clearValues,
+              icon: const Icon(Icons.clear_all),
+              label: const Text('Clear All Values'),
             ),
           ],
         ),
