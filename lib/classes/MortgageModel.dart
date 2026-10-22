@@ -42,7 +42,7 @@ class MortgageModel extends ChangeNotifier {
   }
 
   // Calculator method
-  void CalculateMortgage() {
+  void calculateMortgage() {
     // validating values before attempging calculation
     if (_loanAmount <= 0 || _interestRate <= 0 || _loanTerm <= 0) {
       this._monthlyPayment = 0.0;

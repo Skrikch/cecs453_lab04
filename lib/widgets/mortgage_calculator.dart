@@ -15,13 +15,39 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
   // Defining our text controllers for later
   final TextEditingController _principalController = TextEditingController();
 
+  // Defining an initial state to provide access to the model and initialize listeners
+  // This was actually our main issue haha, I forgot I had removed the text handler :)
+  @override
+  void initState() {
+    super.initState();
+    _principalController.addListener((){
+      final model = Provider.of<MortgageModel>(context, listen: false);
+      // Parse the input and update the model
+      final value = double.tryParse(_principalController.text);
+      if (value != null) {
+        model.loanAmount = value;
+      }
+    });
+  }
+
   void _onButtonPressed(){
+    // Allow the button to dip into the model to make changes
+    final model = Provider.of<MortgageModel>(context, listen: false);
+    model.calculateMortgage();
+
     Navigator.pop(context);
+  }
+
+  // Forgot to dispose the TextEditingController
+  @override
+  void dispose() {
+    _principalController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // NOTE: This might be useless
+    // Essentially any time I need to modify the model, I need to generate a provider for the model
     MortgageModel model = Provider.of<MortgageModel>(context, listen: true);
 
     return Scaffold(
