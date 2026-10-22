@@ -1,12 +1,9 @@
 // Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
-
-import 'dart:math'; // For pow
+import 'package:provider/provider.dart';
 
 // Adding the new model
 import 'package:cecs453_lab04/classes/MortgageModel.dart';
-
-import 'package:cecs453_lab04/classes/mortgageResult_class.dart'; // This is safer because otherwise I have to use positional movement like ../classes lol
 
 // This class is going to be placed into edit_screen, helps divide the logic
 class MortgageCalculator extends StatefulWidget {
@@ -18,49 +15,15 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
   // Defining our text controllers for later
   final TextEditingController _principalController = TextEditingController();
 
-  // Constructing a model to store our data
-  final MortgageModel model = MortgageModel();
-
-  // Double to hold selected rate
-  //double _interestRate = 2.0;
-
-  // Defining State variables for radio buttons and checkboxes
-  //int _interestTerm = 0;
-
-  // NOTE: With our new MortgageModel class, this responsibility no longer belongs
-  // To mortgage_calculator.dart
-
-  /*void _calculateMortgage() {
-    // Simple interest formula is just I = Prt
-    final double principal = double.parse(_principalController.text);
-    final int totalMonths = _interestTerm * 12;
-
-    // converts 2.00 to 0.0200
-    final double rate = _interestRate / 100;
-
-    final double monthlyRate = rate / 12;
-
-    final double monthlyPayment =
-        principal *
-        (monthlyRate * pow(1 + monthlyRate, totalMonths)) /
-        (pow(1 + monthlyRate, totalMonths) - 1);
-
-    final double totalPayment = monthlyPayment * totalMonths;
-
-    final MortgageResult result = MortgageResult(
-      principalAmount: principal,
-      years: _interestTerm,
-      interestRate: _interestRate,
-      monthlyPayment: monthlyPayment,
-      totalPayment: totalPayment,
-    );
-
-    Navigator.pop(context, result);
+  void _onButtonPressed(){
+    Navigator.pop(context);
   }
-  */
 
   @override
   Widget build(BuildContext context) {
+    // NOTE: This might be useless
+    MortgageModel model = Provider.of<MortgageModel>(context, listen: true);
+
     return Scaffold(
       // Probably redundant with edit screen, will fix later
       appBar: AppBar(title: Text("Mortgage Calculator")),
@@ -81,8 +44,7 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
             // Also, setstate needs to handle null like in C#
             // Starting with a title for the group
             Text("Loan Term", style: Theme.of(context).textTheme.titleMedium),
-            RadioGroup(
-              //groupValue: _interestTerm,
+            RadioGroup( //groupValue: _interestTerm,
               groupValue: model.loanTerm,
               onChanged: (int? value) {
                 if (value == null) return;
@@ -123,7 +85,7 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
             ),
             // Calculate Button
             ElevatedButton(
-              onPressed: model.CalculateMortgage,
+              onPressed: _onButtonPressed,
               child: const Text('Calculate'),
             ),
           ],

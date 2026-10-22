@@ -2,17 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:cecs453_lab04/classes/mortgageResult_class.dart';
 
 class MortgageModel extends ChangeNotifier {
+  // Fields required for calculation
   double _loanAmount = 0.0;
-  double _interestRate = 2.0;
+  double _interestRate = 2.0; // Default is 2%
   int _loanTerm = 0;
+
+  // Combining mortgageResult into this file
+  // return fields
+
+  double _monthlyPayment = 0;
+  double _totalPayment = 0;
 
   // Property Getters
   double get loanAmount => _loanAmount;
   double get interestRate => _interestRate;
   int get loanTerm => _loanTerm;
+
+  // Just getters for these, they'll be modified programatically down below
+  double get monthlyPayment => _monthlyPayment;
+  double get totalPayment => _totalPayment;
+
 
   // Setters (each with a notifyListeners())
   set loanAmount(double value) {
@@ -31,31 +42,29 @@ class MortgageModel extends ChangeNotifier {
   }
 
   // Calculator method
-  MortgageResult? CalculateMortgage() {
-    // Simple interest formula is just I = Prt
-    //final double principal = double.parse(_principalController.text);
-    final double principal = _loanAmount;
+  void CalculateMortgage() {
+    // validating values before attempging calculation
+    if (_loanAmount <= 0 || _interestRate <= 0 || _loanTerm <= 0) {
+      this._monthlyPayment = 0.0;
+      this._totalPayment = 0.0;
+      notifyListeners();
+      return;
+    }
+    // Convert to decimal and divide by months
+    final double monthlyInterestRate = (_interestRate / 100) / 12;
+
+    // Convert to years
     final int totalMonths = _loanTerm * 12;
 
-    // converts 2.00 to 0.0200
-    final double rate = _interestRate / 100;
+    // Calculate the numerator and denominator
+    final double numerator = monthlyInterestRate * pow(1 + monthlyInterestRate, totalMonths);
+    final double denominator = pow(1 + monthlyInterestRate, totalMonths) -1;
 
-    final double monthlyRate = rate / 12;
+    double calculatedMonthly = _loanAmount * (numerator / denominator);
 
-    final double monthlyPayment =
-        principal *
-            (monthlyRate * pow(1 + monthlyRate, totalMonths)) /
-            (pow(1 + monthlyRate, totalMonths) - 1);
+    this._monthlyPayment = double.parse(calculatedMonthly.toStringAsFixed(2));
+    this._totalPayment = double.parse((_monthlyPayment * totalMonths).toStringAsFixed(2));
 
-    final double totalPayment = monthlyPayment * totalMonths;
-
-    final MortgageResult result = MortgageResult(
-      principalAmount: principal,
-      years: _loanTerm,
-      interestRate: _interestRate,
-      monthlyPayment: monthlyPayment,
-      totalPayment: totalPayment,
-    );
-    return result;
+    notifyListeners();
   }
 }

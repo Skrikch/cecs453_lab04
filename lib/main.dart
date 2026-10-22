@@ -2,10 +2,20 @@
 import 'package:flutter/material.dart';
 
 import 'widgets/mortgage_calculator.dart';
-import 'classes/mortgageResult_class.dart';
+
+// New imports for Provider and new model
+import 'package:provider/provider.dart';
+import 'package:cecs453_lab04/classes/MortgageModel.dart';
 
 void main() {
-  runApp(const MortgageApp());
+  // Switching over to a ChangeNotifierProvider
+  // runApp(const MortgageApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => MortgageModel(),
+      child: const MortgageApp(),
+    ),
+  );
 }
 
 class MortgageApp extends StatefulWidget {
@@ -26,16 +36,7 @@ class _MortgageAppState extends State<MortgageApp> {
       routes: {
         // default (screen that shows the information)
         '/': (context) => MainScreen(),
-      },
-      // Need to add special logic to handle the object type we're returning
-      onGenerateRoute: (settings) {
-        // Our calculator screen
-        if (settings.name == '/CalcScreen') {
-          return MaterialPageRoute<MortgageResult>(
-            builder: (context) => MortgageCalculator(),
-          );
-        }
-        return null;
+        '/CalcScreen': (context) => MortgageCalculator(),
       },
     );
   }
@@ -51,16 +52,12 @@ class MainScreen extends StatefulWidget {
 
 class _MainState extends State<MainScreen> {
   // Properties
-  bool _isAccepted =
-      false; // holds value for whether Terms and Conditions accepted or not
-  // local variables to hold all needed calculated values
-  double principalAmount = 0;
-  int years = 0;
-  double interestRate = 0.0;
-  double monthlyPayment = 0.0;
-  double totalPayment = 0.0;
+  // holds value for whether Terms and Conditions accepted or not
+  bool _isAccepted = false;
 
   // Function to reset values, bound to the clear button
+  // TODO: Adapt this to our new model
+  /*
   void _clearValues() {
     setState(() {
       _isAccepted = false;
@@ -71,26 +68,20 @@ class _MainState extends State<MainScreen> {
       totalPayment = 0.0;
     });
   }
+   */
 
   Future<void> _onButtonPressed() async {
-    final MortgageResult? result = await Navigator.pushNamed<MortgageResult>(
-      context,
-      '/CalcScreen',
-    );
+    // TODO: Fix this
+    await Navigator.pushNamed(context, '/CalcScreen');
 
-    if (result != null) {
-      // Inputting all of the calculated output values into the local variables
-      principalAmount = result.principalAmount;
-      years = result.years;
-      interestRate = result.interestRate;
-      monthlyPayment = result.monthlyPayment;
-      totalPayment = result.totalPayment;
-      setState(() {});
-    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    // Instantiating the model
+    final model = Provider.of<MortgageModel>(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Mortgage Calculator')),
       body: Padding(
@@ -113,7 +104,12 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Text('\$${principalAmount.toStringAsFixed(2)}'),
+                      child: Consumer<MortgageModel>(
+                        builder: (context, model, child) {
+                          return Text('\$${model.loanAmount.toStringAsFixed(2)}');
+                      }
+                      )
+                      // child: Text('\$${principalAmount.toStringAsFixed(2)}'),
                     ),
                   ],
                 ),
@@ -125,7 +121,12 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Text('$years'),
+                      // child: Text('$years'),
+                        child: Consumer<MortgageModel>(
+                            builder: (context, model, child) {
+                              return Text('${model.loanTerm}');
+                            }
+                        )
                     ),
                   ],
                 ),
@@ -137,7 +138,12 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Text('${interestRate.toStringAsFixed(2)}%'),
+                      //child: Text('${interestRate.toStringAsFixed(2)}%'),
+                        child: Consumer<MortgageModel>(
+                            builder: (context, model, child) {
+                              return Text('${model.interestRate.toStringAsFixed(2)}%');
+                            }
+                        )
                     ),
                   ],
                 ),
@@ -149,7 +155,12 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Text('\$${monthlyPayment.toStringAsFixed(2)}'),
+                      //child: Text('\$${monthlyPayment.toStringAsFixed(2)}'),
+                        child: Consumer<MortgageModel>(
+                            builder: (context, model, child) {
+                              return Text('\$${model.monthlyPayment.toStringAsFixed(2)}');
+                            }
+                        )
                     ),
                   ],
                 ),
@@ -161,7 +172,12 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Text('\$${totalPayment.toStringAsFixed(2)}'),
+                      // child: Text('\$${totalPayment.toStringAsFixed(2)}'),
+                        child: Consumer<MortgageModel>(
+                            builder: (context, model, child) {
+                              return Text('\$${model.totalPayment.toStringAsFixed(2)}');
+                            }
+                        )
                     ),
                   ],
                 ),
@@ -223,7 +239,9 @@ class _MainState extends State<MainScreen> {
 
             // Reset button so the user may start over.
             OutlinedButton.icon(
-              onPressed: _clearValues,
+              //onPressed: _clearValues,
+              // TODO: Fix this
+              onPressed: null,
               icon: const Icon(Icons.clear_all),
               label: const Text('Clear All Values'),
             ),
