@@ -62,7 +62,7 @@ class _MainState extends State<MainScreen> {
     final model = Provider.of<MortgageModel>(context, listen:false);
     setState(() {_isAccepted = false;});
 
-    model.clearValues;
+    model.clearValues();
   }
 
   Future<void> _onButtonPressed() async {
@@ -73,8 +73,8 @@ class _MainState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Instantiating the model
-    final model = Provider.of<MortgageModel>(context, listen: true);
+    // Instantiating the model NOTE: Turns out you don't need to do this if using a consumer
+    // final model = Provider.of<MortgageModel>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Mortgage Calculator')),
@@ -103,7 +103,6 @@ class _MainState extends State<MainScreen> {
                           return Text('\$${model.loanAmount.toStringAsFixed(2)}');
                       }
                       )
-                      // child: Text('\$${principalAmount.toStringAsFixed(2)}'),
                     ),
                   ],
                 ),
@@ -132,7 +131,6 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      //child: Text('${interestRate.toStringAsFixed(2)}%'),
                         child: Consumer<MortgageModel>(
                             builder: (context, model, child) {
                               return Text('${model.interestRate.toStringAsFixed(2)}%');
@@ -149,7 +147,6 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      //child: Text('\$${monthlyPayment.toStringAsFixed(2)}'),
                         child: Consumer<MortgageModel>(
                             builder: (context, model, child) {
                               return Text('\$${model.monthlyPayment.toStringAsFixed(2)}');
@@ -166,7 +163,6 @@ class _MainState extends State<MainScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
-                      // child: Text('\$${totalPayment.toStringAsFixed(2)}'),
                         child: Consumer<MortgageModel>(
                             builder: (context, model, child) {
                               return Text('\$${model.totalPayment.toStringAsFixed(2)}');

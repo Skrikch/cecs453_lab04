@@ -54,7 +54,7 @@ class MortgageModel extends ChangeNotifier {
   // Creating a clear method
   void clearValues(){
     this._loanAmount = 0.0;
-    this._interestRate = 0.0;
+    this._interestRate = 2.0;
     this._loanTerm = 0;
     this._monthlyPayment = 0.0;
     this._totalPayment = 0.0;
