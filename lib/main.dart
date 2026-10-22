@@ -1,15 +1,16 @@
 // Authors: Christos Georgakopoulos, Britney Ferguson
 import 'package:flutter/material.dart';
-
-import 'widgets/mortgage_calculator.dart';
-
-// New imports for Provider and new model
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Custom imports
+import 'package:cecs453_lab04/widgets/mortgage_calculator.dart';
 import 'package:cecs453_lab04/classes/MortgageModel.dart';
 
-void main() {
-  // Switching over to a ChangeNotifierProvider
-  // runApp(const MortgageApp());
+// Switching main to async to await SharedPreferences
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferences.getInstance();
   runApp(
     ChangeNotifierProvider(
       create: (context) => MortgageModel(),
@@ -56,22 +57,15 @@ class _MainState extends State<MainScreen> {
   bool _isAccepted = false;
 
   // Function to reset values, bound to the clear button
-  // TODO: Adapt this to our new model
-  /*
+  // DONE: Adapt this to our new model
   void _clearValues() {
-    setState(() {
-      _isAccepted = false;
-      principalAmount = 0.0;
-      years = 0;
-      interestRate = 0.0;
-      monthlyPayment = 0.0;
-      totalPayment = 0.0;
-    });
+    final model = Provider.of<MortgageModel>(context, listen:false);
+    setState(() {_isAccepted = false;});
+
+    model.clearValues;
   }
-   */
 
   Future<void> _onButtonPressed() async {
-    // TODO: Fix this
     await Navigator.pushNamed(context, '/CalcScreen');
 
     setState(() {});
@@ -239,9 +233,7 @@ class _MainState extends State<MainScreen> {
 
             // Reset button so the user may start over.
             OutlinedButton.icon(
-              //onPressed: _clearValues,
-              // TODO: Fix this
-              onPressed: null,
+              onPressed: _clearValues,
               icon: const Icon(Icons.clear_all),
               label: const Text('Clear All Values'),
             ),

@@ -45,6 +45,20 @@ class MortgageModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  // Adding a constructor for the class that will load any data stored
+  MortgageModel() {
+    loadData();
+  }
+
+  // Creating a clear method
+  void clearValues(){
+    this._loanAmount = 0.0;
+    this._interestRate = 0.0;
+    this._loanTerm = 0;
+    this._monthlyPayment = 0.0;
+    this._totalPayment = 0.0;
+  }
   // Calculator method
   void calculateMortgage() {
     // validating values before attempging calculation
