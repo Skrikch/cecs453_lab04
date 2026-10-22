@@ -58,7 +58,9 @@ class MortgageModel extends ChangeNotifier {
     this._loanTerm = 0;
     this._monthlyPayment = 0.0;
     this._totalPayment = 0.0;
+    notifyListeners();
   }
+
   // Calculator method
   void calculateMortgage() {
     // validating values before attempging calculation
@@ -106,6 +108,8 @@ class MortgageModel extends ChangeNotifier {
       _loanAmount = prefs.getDouble('loanAmount') ?? 0.0;
       _interestRate = prefs.getDouble('interestRate') ?? 2.0;
       _loanTerm = prefs.getInt('loanTerm') ?? 0;
+
+      calculateMortgage();
       notifyListeners();
       return true;
     }
