@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'dart:math'; // For pow
 
+// Adding the new model
+import 'package:cecs453_lab04/classes/MortgageModel.dart';
+
 import 'package:cecs453_lab04/classes/mortgageResult_class.dart'; // This is safer because otherwise I have to use positional movement like ../classes lol
 
 // This class is going to be placed into edit_screen, helps divide the logic
@@ -15,13 +18,19 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
   // Defining our text controllers for later
   final TextEditingController _principalController = TextEditingController();
 
+  // Constructing a model to store our data
+  final MortgageModel model = MortgageModel();
+
   // Double to hold selected rate
-  double _interestRate = 2.0;
+  //double _interestRate = 2.0;
 
   // Defining State variables for radio buttons and checkboxes
-  int _interestTerm = 0;
+  //int _interestTerm = 0;
 
-  void _calculateMortgage() {
+  // NOTE: With our new MortgageModel class, this responsibility no longer belongs
+  // To mortgage_calculator.dart
+
+  /*void _calculateMortgage() {
     // Simple interest formula is just I = Prt
     final double principal = double.parse(_principalController.text);
     final int totalMonths = _interestTerm * 12;
@@ -48,6 +57,7 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
 
     Navigator.pop(context, result);
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +82,12 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
             // Starting with a title for the group
             Text("Loan Term", style: Theme.of(context).textTheme.titleMedium),
             RadioGroup(
-              groupValue: _interestTerm,
+              //groupValue: _interestTerm,
+              groupValue: model.loanTerm,
               onChanged: (int? value) {
                 if (value == null) return;
                 setState(() {
-                  _interestTerm = value;
+                  model.loanTerm = value;
                 });
               },
               child: Column(
@@ -91,7 +102,7 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
             Padding(padding: EdgeInsets.symmetric(vertical: 10),),
 
             DropdownButtonFormField<double>(
-              initialValue: _interestRate,
+              initialValue: model.interestRate,
               decoration: const InputDecoration(
                 labelText: 'Interest Rate',
                 border: OutlineInputBorder(),
@@ -106,13 +117,13 @@ class _MortgageCalculatorState extends State<MortgageCalculator> {
               }),
               onChanged: (value) {
                 setState(() {
-                  _interestRate = value!;
+                  model.interestRate = value!;
                 });
               },
             ),
             // Calculate Button
             ElevatedButton(
-              onPressed: _calculateMortgage,
+              onPressed: model.CalculateMortgage,
               child: const Text('Calculate'),
             ),
           ],
