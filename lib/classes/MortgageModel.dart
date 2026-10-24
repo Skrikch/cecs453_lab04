@@ -58,6 +58,7 @@ class MortgageModel extends ChangeNotifier {
     this._loanTerm = 0;
     this._monthlyPayment = 0.0;
     this._totalPayment = 0.0;
+    saveData();
     notifyListeners();
   }
 
